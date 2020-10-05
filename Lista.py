@@ -50,7 +50,7 @@ class Lista:
 #################Metodos para particonamiento fijo del mismo tamanio#############################3   
 
     def hacerParticionesMismoTamanioFijo(self,numeroParticones):
-        tamanioParticionesFinal= floor(self.memoriaDisponoble/numeroParticones)
+        tamanioParticionesFinal= self.memoriaDisponoble/numeroParticones
         for i in range(0,numeroParticones):
             self.agregar("",tamanioParticionesFinal)
     
@@ -67,13 +67,13 @@ class Lista:
             nodoActual=nodoActual.siguiente
     
     def liberarProcesosMismoTamanioFijo(self, nombre):
-	    nodoActual=self.nodo
-	    while nodoActual:
-		    if(nombre == nodoActual.nombre):
-			    nodoActual.nombre = ""
-			    nodoActual.tamanioUtilizado=0
+        nodoActual=self.nodo
+        while nodoActual:
+            if(nombre == nodoActual.nombre):
+                nodoActual.nombre = ""
+                nodoActual.tamanioUtilizado=0
                 nodoActual.tamanioRestante=nodoActual.tamanioTotal - nodoActual.tamanioUtilizado
-	        nodoActual=nodoActual.siguiente
+            nodoActual=nodoActual.siguiente
     
             
 ################Metodos para el partcionamiento fijo de diferente tamanio##########
@@ -92,4 +92,5 @@ class Lista:
 ################Metodos para el partcionamiento dinámico##########
 
     def cargarProceso_PartDinamico_MejorAjuste(self, nombre, tamanio):
+        pass
         

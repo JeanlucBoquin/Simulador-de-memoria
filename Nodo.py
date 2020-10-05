@@ -26,12 +26,6 @@ class Nodo:
         self.tamanio = tamanio
 
 
-[{nombre:"A",tamaño:"1MB"},{nombre:"B",tamaño:"3MB"}]
-
-[["A",5],["A",5]]
-
-
-
 
 
 

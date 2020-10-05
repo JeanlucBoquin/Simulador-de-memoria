@@ -6,6 +6,8 @@ from PyQt5.QtWidgets import (QWidget, QApplication, QMainWindow, QPushButton, QL
                             QAbstractItemView, QGridLayout, QComboBox, QFrame, QLineEdit
                             )
 
+from Lista import Lista
+
 class MemoriaFija(QMainWindow):
     def __init__(self,sql=None):
         QMainWindow.__init__(self)
@@ -26,9 +28,11 @@ class MemoriaFija(QMainWindow):
         self.seleccionarDivisionDeMemoria.currentIndexChanged.connect(self.crearParticiones)
     def crearParticiones(self):
         #llamar al metodo agregarProcesoFijoMismoTamnio
+        self.lista = Lista()
         print(self.seleccionarDivisionDeMemoria.currentText())
         self.tablaBitacora.clearContents()
         particiones=int(self.seleccionarDivisionDeMemoria.currentText())
+        self.lista.hacerParticionesMismoTamanioFijo(particiones)
         self.tablaBitacora.setRowCount(particiones)
         for h in range(0,self.tablaBitacora.rowCount()):
             if self.tablaBitacora.rowCount() == 8:
@@ -42,7 +46,7 @@ class MemoriaFija(QMainWindow):
             elif self.tablaBitacora.rowCount() == 1:
                 self.tablaBitacora.setRowHeight(h,300)
 
-            self.tablaBitacora.setItem(h, 0, QTableWidgetItem("8 MB"))
+            self.tablaBitacora.setItem(h, 0, QTableWidgetItem("%d MB"%(56/particiones)))
             self.tablaBitacora.item(h,0).setTextAlignment(Qt.AlignCenter)
 
 
