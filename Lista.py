@@ -45,6 +45,7 @@ class Lista:
         nodoActual=self.nodo
         while nodoActual:
             print(nodoActual.nombre)
+            print(nodoActual.tamanioTotal)
             nodoActual=nodoActual.siguiente
 
 #################Metodos para particonamiento fijo del mismo tamanio#############################3   

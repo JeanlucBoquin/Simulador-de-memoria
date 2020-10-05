@@ -26,10 +26,13 @@ class MemoriaFija(QMainWindow):
         self.groupMainWindow()
 
         self.seleccionarDivisionDeMemoria.currentIndexChanged.connect(self.crearParticiones)
+        
+
+
     def crearParticiones(self):
         #llamar al metodo agregarProcesoFijoMismoTamnio
         self.lista = Lista()
-        print(self.seleccionarDivisionDeMemoria.currentText())
+        # print(self.seleccionarDivisionDeMemoria.currentText())
         self.tablaBitacora.clearContents()
         particiones=int(self.seleccionarDivisionDeMemoria.currentText())
         self.lista.hacerParticionesMismoTamanioFijo(particiones)
@@ -49,7 +52,7 @@ class MemoriaFija(QMainWindow):
             self.tablaBitacora.setItem(h, 0, QTableWidgetItem("%d MB"%(56/particiones)))
             self.tablaBitacora.item(h,0).setTextAlignment(Qt.AlignCenter)
 
-
+        self.lista.listar()
     
 
     def groupMainWindow(self):
