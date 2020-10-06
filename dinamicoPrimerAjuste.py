@@ -1,36 +1,98 @@
 import sys
 from PyQt5.QtCore import Qt, QRect
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import (QWidget, QApplication, QMainWindow, QPushButton, QLabel, QGroupBox,
                             QVBoxLayout, QHBoxLayout,QTableWidget, QTableWidgetItem,
                             QAbstractItemView, QGridLayout, QComboBox, QFrame, QLineEdit
                             )
 
+from Lista import Lista
+
 class MemoriaFija(QMainWindow):
     def __init__(self,sql=None):
         QMainWindow.__init__(self)
         QMainWindow.setWindowFlags(self,Qt.MSWindowsFixedSizeDialogHint)
+        self.setWindowIcon(QIcon("ram.png"))
+        self.setWindowTitle("Simulador de memoria")
         self.resize(400,350)
-
+        self.lista = Lista()
         self.centralwidget = QWidget(self)
         self.setCentralWidget(self.centralwidget)
+        self.setStyleSheet("QGroupBox {background:rgba(245, 246, 250,.95)}")
 
-        # self.label = QLabel(self)
-        # self.label.setGeometry(QRect(0, 0, 540, 350))
-        # # self.label.setPixmap(self.pixmap)
-        # self.label.setScaledContents(True)
+        pixmap = QPixmap("fondoMain1.png")
+        self.label = QLabel(self.centralwidget)
+        self.label.setGeometry(QRect(0, 0, 400, 370))
+        self.label.setPixmap(pixmap)
+        self.label.setScaledContents(True)
 
-       # self.showTable()
+    #    self.showTable()
         self.groupMainWindow()
+
+        # self.seleccionarDivisionDeMemoria.currentIndexChanged.connect(self.crearParticiones)
+        self.ptCargar.clicked.connect(self.agregarProceso)
+        self.ptLiberar.clicked.connect(self.liberarProceso)
+        # self.crearParticiones()
+
+    def agregarProceso(self):
+        nombre = self.lineEdit1.text()
+        tamanio = int(self.lineEdit2.text())
+        bandera = self.lista.buscar(nombre)
+        self.lista.cargarProceso_PartDinamico_PrimerAjuste(nombre,tamanio)
+        self.lista.reEnumerarFila()
+        nodo = self.lista.buscar(nombre)
+        try:
+            # print(nodo)
+            # print("Fila: %s"%nodo.fila)
+            # print("Nombre: %s"%nodo.nombre)
+            if self.lista.memoriaDisponoble >= tamanio and bandera == False:
+                # self.tablaBitacora.insertRow(nodo.fila)
+                self.lista.reconstruirTabla(self.tablaBitacora)
+                # self.tablaBitacora.setItem(nodo.fila, 0, QTableWidgetItem("Nombre: %s\n MU: %s"%(nodo.nombre,nodo.tamanioTotal)))
+                # self.tablaBitacora.item(nodo.fila,0).setTextAlignment(Qt.AlignCenter)
+                # self.tablaBitacora.setRowHeight(nodo.fila,40)
+            # print("\n")
+            self.lista.listar()
+            # self.tablaBitacora.item(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
+        except Exception as e:
+            print("Error desde ventada %s"%e)
+
+
+    def liberarProceso(self):
+        nombre = self.lineEdit1.text()
+        nodo = self.lista.buscar(nombre)
+        self.lista.liberarProceso_PartDinamico(nombre)
+        self.lista.reEnumerarFila()
+        # self.tablaBitacora.item(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
+        # self.tablaBitacora.item(nodo.fila, 0, QTableWidgetItem("Nombre: %s\n MU: %s"%(nodo.nombre,nodo.tamanioTotal)))
+        self.lista.reconstruirTabla(self.tablaBitacora)
+        self.lista.listar()
+        # self.tablaBitacora.setRowCount(0)
+        # self.tablaBitacora.clearContents()
+
+    def crearParticiones(self):
+        self.lista = Lista()
+        self.lista.hacerParticionesDeDiferenteTamnio()
+        self.lista.listar()
+        particiones =[14,11,20,4,7]
+        for h in range(0,self.tablaBitacora.rowCount()):
+            if particiones[h] == 14:
+                self.tablaBitacora.setRowHeight(h,70)
+            elif particiones[h] == 11:
+                self.tablaBitacora.setRowHeight(h,50)
+            elif particiones[h] == 20:
+                self.tablaBitacora.setRowHeight(h,97)
+            elif particiones[h] == 4:
+                self.tablaBitacora.setRowHeight(h,20)
+            elif particiones[h] == 7:
+                self.tablaBitacora.setRowHeight(h,40)
+            self.tablaBitacora.setItem(h, 0, QTableWidgetItem("%d MB"%(particiones[h])))
+            self.tablaBitacora.item(h,0).setTextAlignment(Qt.AlignCenter)
 
     def groupMainWindow(self):
         self.groupControl = QGroupBox()
 
         self.etiqueta1 = QLabel("DINAMICO PRIMER AJUSTE")
-
-        # h1 = QHBoxLayout()
-        # h1.addWidget(self.etiqueta2)
-        # h1.addWidget(self.seleccionarDivisionDeMemoria)
 
         self.etiqueta3 = QLabel("Nombre")
         self.lineEdit1 = QLineEdit()
@@ -73,12 +135,12 @@ class MemoriaFija(QMainWindow):
 
         self.tablaBitacora = QTableWidget()
         self.tablaBitacora.setColumnCount(1)    #Establecer numero de columna
-        self.tablaBitacora.setRowCount(2)       #Establecer numero de fila
+        # self.tablaBitacora.setRowCount(5)       #Establecer numero de fila
         self.tablaBitacora.setMaximumWidth(100) #Establecer ancho maximo
 
-        self.tablaBitacora.setItem(0, 0, QTableWidgetItem("8 MB"))
-        self.tablaBitacora.item(0,0).setBackground(Qt.red)
-        self.tablaBitacora.item(0,0).setTextAlignment(Qt.AlignCenter)
+        # self.tablaBitacora.setItem(0, 0, QTableWidgetItem("8 MB"))
+        # self.tablaBitacora.item(0,0).setBackground(Qt.red)
+        # self.tablaBitacora.item(0,0).setTextAlignment(Qt.AlignCenter)
 
         nombrecolumnas=("RAM",)
         self.tablaBitacora.setHorizontalHeaderLabels(nombrecolumnas)#nombre de columna
@@ -114,6 +176,18 @@ class MemoriaFija(QMainWindow):
         self.grid.addWidget(self.groupSimulator,0,2,1,4)
 
         self.centralwidget.setLayout(self.grid)
+
+
+
+
+
+
+
+
+
+    def verificarCantidadDeFilas(self,tabla,datos):
+        if len(datos) > tabla.rowCount():
+            tabla.setRowCount(len(datos))
 
 
 
