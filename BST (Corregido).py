@@ -1,6 +1,11 @@
 class Nodo:
-    def __init__(self,value):
-        self.value = value
+    def __init__(self,nombre,tamanio):
+        self.nombre = nombre
+        self.tamanioTotal = tamanioTotal
+        self.siguiente=None
+        self.tamanioUtilizado=0
+        self.tamanioRestante=0
+        self.fila=i
         self.rightChild = None
         self.leftChild  = None
     
