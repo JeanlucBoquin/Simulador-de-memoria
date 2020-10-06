@@ -33,10 +33,11 @@ class MemoriaFija(QMainWindow):
         self.ptCargar.clicked.connect(self.agregarProceso)
         self.ptLiberar.clicked.connect(self.liberarProceso)
         self.crearParticiones()
+
     def agregarProceso(self):
         nombre = self.lineEdit1.text()
         tamanio = int(self.lineEdit2.text())
-        self.lista.cargarProcesoMismoTamanioFijo(nombre,tamanio)
+        self.lista.cargarProcesoDistintoTamanioFijo(nombre,tamanio)
         nodo = self.lista.buscar(nombre)
         try:
             print(nodo)
@@ -52,16 +53,28 @@ class MemoriaFija(QMainWindow):
     def liberarProceso(self):
         nombre = self.lineEdit1.text()
         nodo = self.lista.buscar(nombre)
-        self.lista.liberarProcesosMismoTamanioFijo(nombre)
+        self.lista.liberarProcesoDistintoTamanioFijo(nombre)
         self.tablaBitacora.item(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
         self.lista.listar()
 
     def crearParticiones(self):
-        #llamar al metodo agregarProcesoFijoMismoTamnio
         self.lista = Lista()
         self.lista.hacerParticionesDeDiferenteTamnio()
         self.lista.listar()
-    
+        particiones =[14,11,20,4,7]
+        for h in range(0,self.tablaBitacora.rowCount()):
+            if particiones[h] == 14:
+                self.tablaBitacora.setRowHeight(h,70)
+            elif particiones[h] == 11:
+                self.tablaBitacora.setRowHeight(h,50)
+            elif particiones[h] == 20:
+                self.tablaBitacora.setRowHeight(h,97)
+            elif particiones[h] == 4:
+                self.tablaBitacora.setRowHeight(h,20)
+            elif particiones[h] == 7:
+                self.tablaBitacora.setRowHeight(h,40)
+            self.tablaBitacora.setItem(h, 0, QTableWidgetItem("%d MB"%(particiones[h])))
+            self.tablaBitacora.item(h,0).setTextAlignment(Qt.AlignCenter)
 
     def groupMainWindow(self):
         self.groupControl = QGroupBox()
@@ -109,7 +122,7 @@ class MemoriaFija(QMainWindow):
 
         self.tablaBitacora = QTableWidget()
         self.tablaBitacora.setColumnCount(1)    #Establecer numero de columna
-        self.tablaBitacora.setRowCount(2)       #Establecer numero de fila
+        self.tablaBitacora.setRowCount(5)       #Establecer numero de fila
         self.tablaBitacora.setMaximumWidth(100) #Establecer ancho maximo
 
         self.tablaBitacora.setItem(0, 0, QTableWidgetItem("8 MB"))

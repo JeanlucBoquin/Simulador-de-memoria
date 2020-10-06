@@ -83,7 +83,7 @@ class Lista:
     def hacerParticionesDeDiferenteTamnio(self):
         particiones =[14,11,20,4,7]
         for i in range(0,len(particiones)):
-           self.agregar("",particiones[i])
+           self.agregar("",particiones[i],i)
     
     def cargarProcesoDistintoTamanioFijo(self,nombre,tamanio):
         self.cargarProcesoMismoTamanioFijo(nombre,tamanio)
