@@ -65,7 +65,7 @@ class Lista:
                     nodoActual.tamanioUtilizado=tamanio
                     nodoActual.tamanioRestante=nodoActual.tamanioTotal - nodoActual.tamanioUtilizado
                     break
-            nodoActual=nodoActual.siguiente
+                nodoActual=nodoActual.siguiente
     
     def liberarProcesosMismoTamanioFijo(self, nombre):
         nodoActual=self.nodo
