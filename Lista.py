@@ -60,7 +60,7 @@ class Lista:
             while nodoActual:
                 if(nodoActual.nombre==nombre):
                     break
-                if(nodoActual.tamanio >= tamanio):
+                if(nodoActual.tamanioTotal >= tamanio):
                     nodoActual.nombre=nombre
                     nodoActual.tamanioUtilizado=tamanio
                     nodoActual.tamanioRestante=nodoActual.tamanioTotal - nodoActual.tamanioUtilizado
@@ -92,6 +92,12 @@ class Lista:
 
 ################Metodos para el partcionamiento dinámico##########
 
+    def liberarProceso_PartDinamico(self, nombre):
+        nodoActual = self.nodo
+        while nodoActual:
+            if (nodoActual.nombre == nombre):
+                nodoActual.nombre = ""
+            nodoActual = nodoActual.siguiente
+    
     def cargarProceso_PartDinamico_MejorAjuste(self, nombre, tamanio):
         pass
-        
