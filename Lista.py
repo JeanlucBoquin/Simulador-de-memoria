@@ -92,4 +92,4 @@ class Lista:
 ################Metodos para el partcionamiento dinámico##########
 
     def cargarProceso_PartDinamico_MejorAjuste(self, nombre, tamanio):
-        
+
