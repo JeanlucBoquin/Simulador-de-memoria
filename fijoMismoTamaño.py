@@ -55,6 +55,7 @@ class MemoriaFija(QMainWindow):
             except Exception as e:
                 print("campo vacio")
                 tamanio = ""
+                
             # tamanio = int(self.lineEdit2.text())
             if nombre != "" and tamanio != "":
                 self.lista.cargarProcesoMismoTamanioFijo(nombre,tamanio)
