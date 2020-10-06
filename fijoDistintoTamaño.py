@@ -1,36 +1,72 @@
 import sys
 from PyQt5.QtCore import Qt, QRect
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import (QWidget, QApplication, QMainWindow, QPushButton, QLabel, QGroupBox,
                             QVBoxLayout, QHBoxLayout,QTableWidget, QTableWidgetItem,
                             QAbstractItemView, QGridLayout, QComboBox, QFrame, QLineEdit
                             )
 
+from Lista import Lista
+
 class MemoriaFija(QMainWindow):
     def __init__(self,sql=None):
         QMainWindow.__init__(self)
         QMainWindow.setWindowFlags(self,Qt.MSWindowsFixedSizeDialogHint)
+        self.setWindowIcon(QIcon("ram.png"))
+        self.setWindowTitle("Simulador de memoria")
         self.resize(400,350)
-
+        self.lista = Lista()
         self.centralwidget = QWidget(self)
         self.setCentralWidget(self.centralwidget)
+        self.setStyleSheet("QGroupBox {background:rgba(245, 246, 250,.95)}")
 
-        # self.label = QLabel(self)
-        # self.label.setGeometry(QRect(0, 0, 540, 350))
-        # # self.label.setPixmap(self.pixmap)
-        # self.label.setScaledContents(True)
+        pixmap = QPixmap("fondoMain1.png")
+        self.label = QLabel(self.centralwidget)
+        self.label.setGeometry(QRect(0, 0, 400, 370))
+        self.label.setPixmap(pixmap)
+        self.label.setScaledContents(True)
 
-       # self.showTable()
+    #    self.showTable()
         self.groupMainWindow()
+
+        # self.seleccionarDivisionDeMemoria.currentIndexChanged.connect(self.crearParticiones)
+        self.ptCargar.clicked.connect(self.agregarProceso)
+        self.ptLiberar.clicked.connect(self.liberarProceso)
+        self.crearParticiones()
+    def agregarProceso(self):
+        nombre = self.lineEdit1.text()
+        tamanio = int(self.lineEdit2.text())
+        self.lista.cargarProcesoMismoTamanioFijo(nombre,tamanio)
+        nodo = self.lista.buscar(nombre)
+        try:
+            print(nodo)
+            print("Fila: %s"%nodo.fila)
+            print("Nombre: %s"%nodo.nombre)
+            # self.tablaBitacora.setItem(nodo.fila, 0, QTableWidgetItem("%s MU:%s\nML:%s"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante)))
+            self.tablaBitacora.item(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
+            self.lista.listar()
+        except Exception as e:
+            print(e)
+
+
+    def liberarProceso(self):
+        nombre = self.lineEdit1.text()
+        nodo = self.lista.buscar(nombre)
+        self.lista.liberarProcesosMismoTamanioFijo(nombre)
+        self.tablaBitacora.item(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
+        self.lista.listar()
+
+    def crearParticiones(self):
+        #llamar al metodo agregarProcesoFijoMismoTamnio
+        self.lista = Lista()
+        self.lista.hacerParticionesDeDiferenteTamnio()
+        self.lista.listar()
+    
 
     def groupMainWindow(self):
         self.groupControl = QGroupBox()
 
-        self.etiqueta1 = QLabel("FIJO DISTINTO TAMAÑO")
-
-        # h1 = QHBoxLayout()
-        # h1.addWidget(self.etiqueta2)
-        # h1.addWidget(self.seleccionarDivisionDeMemoria)
+        self.etiqueta1 = QLabel("FIJO DE DISTINTO TAMAÑO")
 
         self.etiqueta3 = QLabel("Nombre")
         self.lineEdit1 = QLineEdit()
@@ -114,6 +150,18 @@ class MemoriaFija(QMainWindow):
         self.grid.addWidget(self.groupSimulator,0,2,1,4)
 
         self.centralwidget.setLayout(self.grid)
+
+
+
+
+
+
+
+
+
+    def verificarCantidadDeFilas(self,tabla,datos):
+        if len(datos) > tabla.rowCount():
+            tabla.setRowCount(len(datos))
 
 
 

@@ -80,7 +80,7 @@ class Lista:
 ################Metodos para el partcionamiento fijo de diferente tamanio##########
 
     def hacerParticionesDeDiferenteTamnio(self):
-        particiones =[15,1,8,3,10,4,14,2,5]
+        particiones =[15,5,8,3,10,4,6,5]
         for i in range(0,len(particiones)):
            self.agregar("",particiones[i])
     
