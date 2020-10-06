@@ -117,9 +117,6 @@ class Lista:
             tabla.insertRow(nodoActual.fila)
             tabla.setRowHeight(nodoActual.fila,40)
 
-            print("#########")
-            print("nombre:%s    tamanio:%s fila:%s"%(nodoActual.nombre,nodoActual.tamanioTotal,nodoActual.fila))
-            print("#########")
             if nodoActual.nombre != "":
                 tabla.setItem(nodoActual.fila, 0, QTableWidgetItem("Nombre: %s\n MU: %s"%(nodoActual.nombre,nodoActual.tamanioTotal)))
             else:
@@ -197,6 +194,7 @@ class Lista:
              while nodoActual2:
                 if (nodoActual2.nombre == nombre):
                     print("Hay el mismo nombre ya")
+                    break
                 else:
                     if (nodoActual2.tamanioTotal == tamanioMejorAjuste and nodoActual2.nombre == ""):
                         nodoActual2.nombre = nombre

@@ -53,9 +53,15 @@ class MemoriaDistinta(QMainWindow):
     def liberarProceso(self):
         nombre = self.lineEdit1.text()
         nodo = self.lista.buscar(nombre)
-        self.lista.liberarProcesoDistintoTamanioFijo(nombre)
-        self.tablaBitacora.item(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
-        self.lista.listar()
+        try:
+            self.lista.liberarProcesoDistintoTamanioFijo(nombre)
+            self.tablaBitacora.setItem(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
+            self.lista.listar()
+        except Exception as e:
+            print(e)
+        # self.lista.liberarProcesoDistintoTamanioFijo(nombre)
+        # self.tablaBitacora.setItem(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
+        # self.lista.listar()
 
     def crearParticiones(self):
         self.lista = Lista()

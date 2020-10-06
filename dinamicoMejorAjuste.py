@@ -31,7 +31,20 @@ class MemoriaDinamica(QMainWindow):
         self.ptLiberar.clicked.connect(self.liberarProceso)
         # self.seleccionarDivisionDeMemoria.currentIndexChanged.connect(self.prueba)
         self.seleccionarDivisionDeMemoria.currentTextChanged.connect(self.prueba)
+        self.seleccionarDivisionDeMemoriaLC.currentTextChanged.connect(self.prueba2)
 
+    def prueba2(self):
+        if self.seleccionarDivisionDeMemoriaLC.currentText() == "Cargar proceso":
+            self.ptLiberar.setEnabled(False)
+            self.ptCargar.setEnabled(True)
+            self.lineEdit1.setEnabled(True)
+            self.lineEdit2.setEnabled(True)
+
+        elif self.seleccionarDivisionDeMemoriaLC.currentText() == "Liberar proceso":
+            self.ptLiberar.setEnabled(True)
+            self.ptCargar.setEnabled(False)
+            self.lineEdit1.setEnabled(True)
+            self.lineEdit2.setEnabled(False)
 
     def prueba(self):
         print(self.seleccionarDivisionDeMemoria.currentText())
@@ -82,6 +95,20 @@ class MemoriaDinamica(QMainWindow):
         self.seleccionarDivisionDeMemoria.addItem("MEJOR AJUSTE")
         self.seleccionarDivisionDeMemoria.addItem("PRIMER AJUSTE")
         self.seleccionarDivisionDeMemoria.addItem("SIGUIENTE AJUSTE")
+        
+        self.etiqueta22 = QLabel("Cargar/Liberar")
+        self.seleccionarDivisionDeMemoriaLC = QComboBox()
+        # self.seleccionarDivisionDeMemoriaLC.addItem("")
+        self.seleccionarDivisionDeMemoriaLC.addItem("Cargar proceso")
+        self.seleccionarDivisionDeMemoriaLC.addItem("Liberar proceso")
+
+        h11 = QHBoxLayout()
+        h11.addWidget(self.etiqueta22)
+        h11.addWidget(self.seleccionarDivisionDeMemoriaLC)
+
+
+
+
         print(self.seleccionarDivisionDeMemoria.currentText())
         h1 = QHBoxLayout()
         h1.addWidget(self.etiqueta2)
@@ -105,6 +132,7 @@ class MemoriaDinamica(QMainWindow):
 
         self.ptCargar = QPushButton("Cargar")
         self.ptLiberar = QPushButton("Liberar")
+        self.ptLiberar.setEnabled(False)
         h4 = QHBoxLayout()
         h4.addWidget(self.ptCargar)
         h4.addWidget(self.ptLiberar)
@@ -112,10 +140,11 @@ class MemoriaDinamica(QMainWindow):
         v1 = QVBoxLayout()
         v1.addWidget(self.etiqueta1)
         v1.addLayout(h1)
+        v1.addLayout(h11)
         v1.addLayout(h2)
         v1.addLayout(h3)
         v1.addLayout(h4)
-        v1.addSpacing(200)
+        v1.addSpacing(170)
         self.groupControl.setLayout(v1)
 
         self.groupSimulator = QGroupBox()
