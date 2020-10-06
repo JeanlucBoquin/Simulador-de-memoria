@@ -60,7 +60,7 @@ class Lista:
             while nodoActual:
                 if(nodoActual.nombre==nombre):
                     break
-                if(nodoActual.tamanioTotal >= tamanio):
+                if(nodoActual.tamanioTotal >= tamanio and nodoActual.nombre == ""):
                     nodoActual.nombre=nombre
                     nodoActual.tamanioUtilizado=tamanio
                     nodoActual.tamanioRestante=nodoActual.tamanioTotal - nodoActual.tamanioUtilizado
