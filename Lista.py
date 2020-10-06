@@ -179,32 +179,40 @@ class Lista:
             self.agregar(nombre, tamanio)
             self.agregar("", self.memoriaDisponoble-tamanio)
         else:
-                #Buscando las particiones mayores o iguales libres
-                nodoActual = self.nodo
-                tamaniosProcesosMayoresOIguales = []
-                tamanioMejorAjuste = 0
-                while nodoActual:
-                    if (nodoActual.tamanioTotal >= tamanio and nodoActual.nombre == ""):
-                        tamaniosProcesosMayoresOIguales.append(nodoActual.tamanioTotal)
-                    nodoActual = nodoActual.siguiente
-                
-                tamanioMejorAjuste = (tamaniosProcesosMayoresOIguales.sort())[0]
-                #Recorrer la lista buscando la partición más ajustada.
-                nodoActual = self.nodo
-                while nodoActual:
+            print("!!!!!!!!!!!!!!!!!!!!!!!!")
+            #Buscando las particiones mayores o iguales libres
+            nodoActual = self.nodo
+            tamaniosProcesosMayoresOIguales = []
+            tamanioMejorAjuste = 0
+            while nodoActual:
+                if (nodoActual.tamanioTotal >= tamanio and nodoActual.nombre == ""):
+                    tamaniosProcesosMayoresOIguales.append(nodoActual.tamanioTotal)
+                nodoActual = nodoActual.siguiente
+                print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&6")
+            print(tamaniosProcesosMayoresOIguales)
+            tamaniosProcesosMayoresOIguales.sort()
+            tamanioMejorAjuste = tamaniosProcesosMayoresOIguales[0]
+            print(tamaniosProcesosMayoresOIguales)
+            #Recorrer la lista buscando la partición más ajustada.
+            nodoActual = self.nodo
+            while nodoActual:
+                if (nodoActual.nombre == nombre):
+                    print("Hay el mismo nombre ya")
+                    break
+                else:
                     if (nodoActual.tamanioTotal == tamanioMejorAjuste and nodoActual.nombre == ""):
                         nodoActual.nombre = nombre
-                    self.ultimoIngresado = nodoActual
-                    if (nodoActual.tamanioTotal > tamanio):
-                        tamanioQueResta = nodoActual.tamanioTotal - tamanio
-                        nodoActual.tamanioTotal = tamanio
-
-                        siguiente_temp = nodoActual.siguiente
-                        #nodoActual.siguiente = self.agregar("", tamanioQueResta)
-                        nodoActual.siguiente = Nodo("", tamanioQueResta)
-                        nodoActual.siguiente.siguiente = siguiente_temp
+                        self.ultimoIngresado = nodoActual
+                        if (nodoActual.tamanioTotal > tamanio):
+                            tamanioQueResta = nodoActual.tamanioTotal - tamanio
+                            nodoActual.tamanioTotal = tamanio
+                
+                            siguiente_temp = nodoActual.siguiente
+                            #nodoActual.siguiente = self.agregar("", tamanioQueResta)
+                            nodoActual.siguiente = Nodo("", tamanioQueResta)
+                            nodoActual.siguiente.siguiente = siguiente_temp
                     break
-
+                nodoActual = nodoActual.siguiente
 
     def cargarProceso_PartDinamico_PrimerAjuste(self, nombre, tamanio):
         if self.nodo==None:
@@ -233,4 +241,33 @@ class Lista:
 
 
     def cargarProceso_PartDinamico_SiguienteAjuste(self, nombre, tamanio): #supuestamente completo.
-        pass
+        if self.ultimoIngresado==None:
+            self.agregar(nombre, tamanio)
+            self.agregar("", self.memoriaDisponoble-tamanio)
+
+        else:
+            nodoActual=self.ultimoIngresado
+            ingresadoYa = False
+            while (nodoActual):
+                if (nodoActual.nombre == nombre):
+                    print("Hay otro nombre ya")
+                    break
+                if (nodoActual.tamanioTotal >= tamanio and nodoActual.nombre == ""):
+                    #Adición y creación
+                    nodoActual.nombre = nombre
+                    self.ultimoIngresado = nodoActual
+                    if (nodoActual.tamanioTotal > tamanio):
+                        tamanioQueResta = nodoActual.tamanioTotal - tamanio
+                        nodoActual.tamanioTotal = tamanio
+
+                        siguiente_temp = nodoActual.siguiente
+                        #nodoActual.siguiente = self.agregar("", tamanioQueResta)
+                        nodoActual.siguiente = Nodo("", tamanioQueResta)
+                        nodoActual.siguiente.siguiente = siguiente_temp
+                    ingresadoYa = True
+                if (ingresadoYa==True):
+                    break
+                nodoActual = nodoActual.siguiente
+
+            if (ingresadoYa==False):
+                self.cargarProceso_PartDinamico_PrimerAjuste(nombre, tamanio)

@@ -38,7 +38,7 @@ class MemoriaFija(QMainWindow):
         nombre = self.lineEdit1.text()
         tamanio = int(self.lineEdit2.text())
         bandera = self.lista.buscar(nombre)
-        self.lista.cargarProceso_PartDinamico_MejorAjuste(nombre,tamanio)
+        self.lista.cargarProceso_PartDinamico_SiguienteAjuste(nombre,tamanio)
         self.lista.reEnumerarFila()
         nodo = self.lista.buscar(nombre)
         if self.tablaBitacora.rowCount()==8:
