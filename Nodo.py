@@ -1,11 +1,11 @@
 class Nodo:
-    def __init__(self,nombre=None,tamanioTotal=None,siguiente=None):
+    def __init__(self,nombre=None,tamanioTotal=None,i=None):
         self.nombre = nombre
         self.tamanioTotal = tamanioTotal
-        self.siguiente=siguiente
+        self.siguiente=None
         self.tamanioUtilizado=0
         self.tamanioRestante=0
-
+        self.fila=i
 
     def getObjeto(self):
         return self.objeto

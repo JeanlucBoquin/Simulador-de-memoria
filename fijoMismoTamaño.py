@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtCore import Qt, QRect
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import (QWidget, QApplication, QMainWindow, QPushButton, QLabel, QGroupBox,
                             QVBoxLayout, QHBoxLayout,QTableWidget, QTableWidgetItem,
                             QAbstractItemView, QGridLayout, QComboBox, QFrame, QLineEdit
@@ -12,22 +12,49 @@ class MemoriaFija(QMainWindow):
     def __init__(self,sql=None):
         QMainWindow.__init__(self)
         QMainWindow.setWindowFlags(self,Qt.MSWindowsFixedSizeDialogHint)
+        self.setWindowIcon(QIcon("ram.png"))
+        self.setWindowTitle("Simulador de memoria")
         self.resize(400,350)
-
+        self.lista = Lista()
         self.centralwidget = QWidget(self)
         self.setCentralWidget(self.centralwidget)
+        self.setStyleSheet("QGroupBox {background:rgba(245, 246, 250,.95)}")
 
-        # self.label = QLabel(self)
-        # self.label.setGeometry(QRect(0, 0, 540, 350))
-        # # self.label.setPixmap(self.pixmap)
-        # self.label.setScaledContents(True)
+        pixmap = QPixmap("fondoMain1.png")
+        self.label = QLabel(self.centralwidget)
+        self.label.setGeometry(QRect(0, 0, 400, 370))
+        self.label.setPixmap(pixmap)
+        self.label.setScaledContents(True)
 
-       # self.showTable()
+    #    self.showTable()
         self.groupMainWindow()
 
         self.seleccionarDivisionDeMemoria.currentIndexChanged.connect(self.crearParticiones)
-        
+        self.ptCargar.clicked.connect(self.agregarProceso)
+        self.ptLiberar.clicked.connect(self.liberarProceso)
 
+    def agregarProceso(self):
+        nombre = self.lineEdit1.text()
+        tamanio = int(self.lineEdit2.text())
+        self.lista.cargarProcesoMismoTamanioFijo(nombre,tamanio)
+        nodo = self.lista.buscar(nombre)
+        try:
+            print(nodo)
+            print("Fila: %s"%nodo.fila)
+            print("Nombre: %s"%nodo.nombre)
+            # self.tablaBitacora.setItem(nodo.fila, 0, QTableWidgetItem("%s MU:%s\nML:%s"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante)))
+            self.tablaBitacora.item(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
+            self.lista.listar()
+        except Exception as e:
+            print(e)
+
+
+    def liberarProceso(self):
+        nombre = self.lineEdit1.text()
+        nodo = self.lista.buscar(nombre)
+        self.lista.liberarProcesosMismoTamanioFijo(nombre)
+        self.tablaBitacora.item(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
+        self.lista.listar()
 
     def crearParticiones(self):
         #llamar al metodo agregarProcesoFijoMismoTamnio
@@ -51,6 +78,7 @@ class MemoriaFija(QMainWindow):
 
             self.tablaBitacora.setItem(h, 0, QTableWidgetItem("%d MB"%(56/particiones)))
             self.tablaBitacora.item(h,0).setTextAlignment(Qt.AlignCenter)
+            # self.tablaBitacora.item(0,0).setText("Hola")
 
         self.lista.listar()
     
@@ -162,94 +190,10 @@ class MemoriaFija(QMainWindow):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def verificarCantidadDeFilas(self,tabla,datos):
         if len(datos) > tabla.rowCount():
             tabla.setRowCount(len(datos))
 
-    def establecerDatos(self):
-        self.tablaBitacora.clearContents()
-        datos = self.sql.select()
-        fila=0
-        for x in datos:
-            self.tablaBitacora.setItem(fila,0,QTableWidgetItem(str(x[0])))
-            self.tablaBitacora.setItem(fila,1,QTableWidgetItem(str(x[1])))
-            self.tablaBitacora.setItem(fila,2,QTableWidgetItem(x[2]))
-            self.tablaBitacora.setItem(fila,3,QTableWidgetItem(x[3]))
-            # self.tablaBitacora.setItem(fila,3,QTableWidgetItem(x[4]))
-
-            fila+=1
-
-    def clickRegresar(self):
-        self.groupBox_Inicio.show()
-        self.groupBox_HistorialAcademico.hide()
-        self.groupBox_MatriculaAsignatura.hide()
-        self.groupBox_CancelarAsignatura.hide()
-        self.groupBox_MatriculaLaboratorio.hide()
-        self.groupBox_CancelarLaboratorio.hide()
-        self.groupBox_Forma03.hide()
-        self.tablaDepartamentoLab.clearContents()
-        self.tablaLaboratorio.clearContents()
-        self.tablaSeccionesLaboratorio.clearContents()
-
-    def showTable(self):
-        self.tablaBitacora = QTableWidget()
-        self.tablaBitacora.setColumnCount(1)    #Establecer numero de columna
-        self.tablaBitacora.setRowCount(2)       #Establecer numero de fila
-        self.tablaBitacora.setMaximumWidth(100) #Establecer ancho maximo
-
-        self.tablaBitacora.setItem(0, 0, QTableWidgetItem("8 MB"))
-        self.tablaBitacora.item(0,0).setBackground(Qt.red)
-        self.tablaBitacora.item(0,0).setTextAlignment(Qt.AlignCenter)
-
-        nombrecolumnas=("RAM",)
-        self.tablaBitacora.setHorizontalHeaderLabels(nombrecolumnas)#nombre de columna
-
-        self.tablaBitacora.setAutoScroll(True)
-        self.tablaBitacora.setAlternatingRowColors(True)
-        self.tablaBitacora.verticalHeader().setDefaultSectionSize(20)       #alturas celda
-        self.tablaBitacora.setColumnWidth(0,100)                            #anchura celda
-        self.tablaBitacora.setRowHeight(0,10)
-        self.tablaBitacora.setRowHeight(1,50)
-        self.tablaBitacora.setRowHeight(2,90)
-
-      
-        """
-            for indice, ancho in enumerate((anchura1,anchura2,anchura3),start=0):
-                self.tablaBitacora.setColumnWidth(indice,ancho)
-        """
-
-        self.tablaBitacora.setEditTriggers(QAbstractItemView.NoEditTriggers)#Desabilitar editar celdas
-        # self.tablaBitacora.setSelectionMode(QAbstractItemView.SingleSelection)#Seleccionar una celda a la vez
-        # self.tablaBitacora.setSelectionMode(QAbstractItemView.NoSelection)#Desabilita la selecion
-        self.tablaBitacora.setDragDropOverwriteMode(False)
-        self.tablaBitacora.setSortingEnabled(False)#desabilita el ordenamiento
-        self.tablaBitacora.verticalHeader().setVisible(False)#ocultar header verticales
-
-        self.btRegresar = QPushButton("Regresar")
-        # self.btRegresar.setFlat(True)
-
-        vl = QGridLayout()
-        vl.addWidget(self.tablaBitacora,0,0,2,0)
-        vl.addWidget(self.btRegresar,2,0,1,0)
-
-        self.centralwidget.setLayout(vl)
 
 
 if __name__ == "__main__":
