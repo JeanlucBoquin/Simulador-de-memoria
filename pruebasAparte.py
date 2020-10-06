@@ -128,8 +128,8 @@ class Lista:
 
     def cargarProceso_PartDinamico_PrimerAjuste(self, nombre, tamanio):
         if self.nodo==None:
-            self.agregar(nombre, tamanio)
-            if (tamanio != self.memoriaDisponoble):
+            if (self.memoriaDisponoble >= tamanio):
+                self.agregar(nombre, tamanio)
                 self.agregar("", self.memoriaDisponoble-tamanio)
         else:
             nodoActual = self.nodo
@@ -139,12 +139,11 @@ class Lista:
                     if (nodoActual.tamanioTotal > tamanio):
                         tamanioQueResta = nodoActual.tamanioTotal - tamanio
                         nodoActual.tamanioTotal = tamanio
-
                         siguiente_temp = nodoActual.siguiente
                         nodoActual.siguiente = self.agregar("", tamanioQueResta)
                         nodoActual.siguiente.siguiente = siguiente_temp
                         break
-            nodoActual = nodoActual.siguiente
+                nodoActual = nodoActual.siguiente
 
 
 
@@ -158,7 +157,7 @@ class Lista:
             nodoActual=self.nodo
             while nodoActual:
                 nodoActual=nodoActual.siguiente
-            
+
             if(nodoActual.tamanioTotal>=tamanio and nodoActual.nombre == ""):
                 nodoActual.nombre=nombre
                 if(nodoActual.tamanioTotal>tamanioTotal):
@@ -166,3 +165,4 @@ class Lista:
                     nodoActual.nodoActual.tamanioTotal=tamanioTotal
 
 
+df
