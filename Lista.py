@@ -85,5 +85,11 @@ class Lista:
     
     def cargarProcesoDistintoTamanioFijo(self,nombre,tamanio):
         self.cargarProcesoMismoTamanioFijo(nombre,tamanio)
-    
-    
+
+    def liberarProcesoDistintoTamanioFijo(self, nombre):
+        self.liberarProcesosMismoTamanioFijo(nombre)
+
+################Metodos para el partcionamiento dinámico##########
+
+    def cargarProceso_PartDinamico_MejorAjuste(self, nombre, tamanio):
+        
