@@ -34,6 +34,21 @@ class MemoriaDistinta(QMainWindow):
         self.ptLiberar.clicked.connect(self.liberarProceso)
         self.crearParticiones()
 
+        self.seleccionarDivisionDeMemoriaLC.currentTextChanged.connect(self.prueba2)
+
+    def prueba2(self):
+        if self.seleccionarDivisionDeMemoriaLC.currentText() == "Cargar proceso":
+            self.ptLiberar.setEnabled(False)
+            self.ptCargar.setEnabled(True)
+            self.lineEdit1.setEnabled(True)
+            self.lineEdit2.setEnabled(True)
+
+        elif self.seleccionarDivisionDeMemoriaLC.currentText() == "Liberar proceso":
+            self.ptLiberar.setEnabled(True)
+            self.ptCargar.setEnabled(False)
+            self.lineEdit1.setEnabled(True)
+            self.lineEdit2.setEnabled(False)
+
     def agregarProceso(self):
         nombre = self.lineEdit1.text()
         tamanio = int(self.lineEdit2.text())
@@ -89,6 +104,16 @@ class MemoriaDistinta(QMainWindow):
         self.btRegresar.setGeometry(QRect(5,296,90,25))
 
         self.etiqueta1 = QLabel("FIJO DE DISTINTO TAMAÑO")
+        
+        self.etiqueta22 = QLabel("Cargar/Liberar")
+        self.seleccionarDivisionDeMemoriaLC = QComboBox()
+        # self.seleccionarDivisionDeMemoriaLC.addItem("")
+        self.seleccionarDivisionDeMemoriaLC.addItem("Cargar proceso")
+        self.seleccionarDivisionDeMemoriaLC.addItem("Liberar proceso")
+
+        h11 = QHBoxLayout()
+        h11.addWidget(self.etiqueta22)
+        h11.addWidget(self.seleccionarDivisionDeMemoriaLC)
 
         self.etiqueta3 = QLabel("Nombre")
         self.lineEdit1 = QLineEdit()
@@ -106,17 +131,18 @@ class MemoriaDistinta(QMainWindow):
 
         self.ptCargar = QPushButton("Cargar")
         self.ptLiberar = QPushButton("Liberar")
+        self.ptLiberar.setEnabled(False)
         h4 = QHBoxLayout()
         h4.addWidget(self.ptCargar)
         h4.addWidget(self.ptLiberar)
 
         v1 = QVBoxLayout()
         v1.addWidget(self.etiqueta1)
-        # v1.addLayout(h1)
+        v1.addLayout(h11)
         v1.addLayout(h2)
         v1.addLayout(h3)
         v1.addLayout(h4)
-        v1.addSpacing(200)
+        v1.addSpacing(170)
         self.groupControl.setLayout(v1)
 
 

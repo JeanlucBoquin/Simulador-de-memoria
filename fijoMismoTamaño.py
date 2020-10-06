@@ -32,6 +32,20 @@ class MemoriaFija(QMainWindow):
         self.seleccionarDivisionDeMemoria.currentIndexChanged.connect(self.crearParticiones)
         self.ptCargar.clicked.connect(self.agregarProceso)
         self.ptLiberar.clicked.connect(self.liberarProceso)
+        self.seleccionarDivisionDeMemoriaLC.currentTextChanged.connect(self.prueba2)
+
+    def prueba2(self):
+        if self.seleccionarDivisionDeMemoriaLC.currentText() == "Cargar proceso":
+            self.ptLiberar.setEnabled(False)
+            self.ptCargar.setEnabled(True)
+            self.lineEdit1.setEnabled(True)
+            self.lineEdit2.setEnabled(True)
+
+        elif self.seleccionarDivisionDeMemoriaLC.currentText() == "Liberar proceso":
+            self.ptLiberar.setEnabled(True)
+            self.ptCargar.setEnabled(False)
+            self.lineEdit1.setEnabled(True)
+            self.lineEdit2.setEnabled(False)
 
     def agregarProceso(self):
         nombre = self.lineEdit1.text()
@@ -52,9 +66,13 @@ class MemoriaFija(QMainWindow):
     def liberarProceso(self):
         nombre = self.lineEdit1.text()
         nodo = self.lista.buscar(nombre)
-        self.lista.liberarProcesosMismoTamanioFijo(nombre)
-        self.tablaBitacora.item(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
-        self.lista.listar()
+        try:
+            self.lista.liberarProcesosMismoTamanioFijo(nombre)
+            self.tablaBitacora.setItem(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
+            self.lista.listar()
+        except Exception as e:
+            print(e)
+
 
     def crearParticiones(self):
         #llamar al metodo agregarProcesoFijoMismoTamnio
@@ -87,6 +105,15 @@ class MemoriaFija(QMainWindow):
         self.groupControl = QGroupBox()
 
         self.etiqueta1 = QLabel("FIJO IGUAL TAMAÑO")
+        self.etiqueta22 = QLabel("Cargar/Liberar")
+        self.seleccionarDivisionDeMemoriaLC = QComboBox()
+        # self.seleccionarDivisionDeMemoriaLC.addItem("")
+        self.seleccionarDivisionDeMemoriaLC.addItem("Cargar proceso")
+        self.seleccionarDivisionDeMemoriaLC.addItem("Liberar proceso")
+
+        h11 = QHBoxLayout()
+        h11.addWidget(self.etiqueta22)
+        h11.addWidget(self.seleccionarDivisionDeMemoriaLC)
 
         self.etiqueta2 = QLabel("Particiones")
         self.seleccionarDivisionDeMemoria = QComboBox()
@@ -118,17 +145,19 @@ class MemoriaFija(QMainWindow):
 
         self.ptCargar = QPushButton("Cargar")
         self.ptLiberar = QPushButton("Liberar")
+        self.ptLiberar.setEnabled(False)
         h4 = QHBoxLayout()
         h4.addWidget(self.ptCargar)
         h4.addWidget(self.ptLiberar)
 
         v1 = QVBoxLayout()
         v1.addWidget(self.etiqueta1)
+        v1.addLayout(h11)
         v1.addLayout(h1)
         v1.addLayout(h2)
         v1.addLayout(h3)
         v1.addLayout(h4)
-        v1.addSpacing(200)
+        v1.addSpacing(170)
         self.groupControl.setLayout(v1)
 
 
