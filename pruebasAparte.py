@@ -146,14 +146,23 @@ class Lista:
                         break
             nodoActual = nodoActual.siguiente
 
+
+
     def cargarProceso_PartDinamico_SiguienteAjuste(self, nombre, tamanio): #incompleto aún.
         #ultimoProcesoIngresado = self.nodo
         if self.nodo==None:
             self.agregar(nombre, tamanio)
-            if (tamanio != self.memoriaDisponoble):
-                self.agregar("", self.memoriaDisponoble-tamanio)
+            self.agregar("", self.memoriaDisponoble-tamanio)
         else:
-            nodoActual = ultimoProcesoIngresado
-            recorrer_final = False
-            while ultimoProcesoIngresado:
-                pass
+            #Obtener ultimo nodo de la lista
+            nodoActual=self.nodo
+            while nodoActual:
+                nodoActual=nodoActual.siguiente
+            
+            if(nodoActual.tamanioTotal>=tamanio and nodoActual.nombre == ""):
+                nodoActual.nombre=nombre
+                if(nodoActual.tamanioTotal>tamanioTotal):
+                    tamanioRestante= nodoActual.tamanioTotal-tamanio
+                    nodoActual.nodoActual.tamanioTotal=tamanioTotal
+
+
