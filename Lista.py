@@ -3,7 +3,7 @@ class Lista:
     def __init__(self):
         self.nodo=None
         self.memoriaDisponoble = 56
-    
+
     def agregar(self, nombre, tamanio,i=None):
         if self.nodo==None:
            self.nodo=Nodo(nombre,tamanio,i)
@@ -16,7 +16,7 @@ class Lista:
                     nodoActual.siguiente=Nodo(nombre,tamanio,i)
                     break
                 nodoActual=nodoActual.siguiente
-        
+
     def eliminar(self,nombre):
         if self.nodo.nombre == nombre:
             self.nodo=self.nodo.siguiente
@@ -31,7 +31,7 @@ class Lista:
                 nodoActual=nodoActual.siguiente
 
     def buscar(self,nombre):
-        if self.nodo.nombre == nombre: 
+        if self.nodo.nombre == nombre:
             return self.nodo
         else:
             nodoActual=self.nodo.siguiente
@@ -49,13 +49,13 @@ class Lista:
             nodoActual=nodoActual.siguiente
 
 
-#################Metodos para particonamiento fijo del mismo tamanio#############################3   
+#################Metodos para particonamiento fijo del mismo tamanio#############################3
 
     def hacerParticionesMismoTamanioFijo(self,numeroParticones):
         tamanioParticionesFinal= self.memoriaDisponoble/numeroParticones
         for i in range(0,numeroParticones):
             self.agregar("",tamanioParticionesFinal,i)
-    
+
     def cargarProcesoMismoTamanioFijo(self,nombre,tamanio):
             nodoActual=self.nodo
             while nodoActual:
@@ -67,7 +67,7 @@ class Lista:
                     nodoActual.tamanioRestante=nodoActual.tamanioTotal - nodoActual.tamanioUtilizado
                     break
                 nodoActual=nodoActual.siguiente
-    
+
     def liberarProcesosMismoTamanioFijo(self, nombre):
         nodoActual=self.nodo
         while nodoActual:
@@ -76,15 +76,15 @@ class Lista:
                 nodoActual.tamanioUtilizado=0
                 nodoActual.tamanioRestante=nodoActual.tamanioTotal - nodoActual.tamanioUtilizado
             nodoActual=nodoActual.siguiente
-    
-            
+
+
 ################Metodos para el partcionamiento fijo de diferente tamanio##########
 
     def hacerParticionesDeDiferenteTamnio(self):
         particiones =[14,11,20,4,7]
         for i in range(0,len(particiones)):
            self.agregar("",particiones[i],i)
-    
+
     def cargarProcesoDistintoTamanioFijo(self,nombre,tamanio):
         self.cargarProcesoMismoTamanioFijo(nombre,tamanio)
 
@@ -98,6 +98,13 @@ class Lista:
         while nodoActual:
             if (nodoActual.nombre == nombre):
                 nodoActual.nombre = ""
+                try:
+                    if nodoActual.siguiente.nombre == "":
+                        nodoActual.tamanioTotal += nodoActual.siguiente.tamanioTotal
+                        nodoActual.siguiente = nodoActual.siguiente.siguiente
+                except Exception as e:
+                    print("por si acaso %s"%e)
+
             nodoActual = nodoActual.siguiente
 
 # """ ##Pendiente de completar.
