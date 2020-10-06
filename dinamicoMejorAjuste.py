@@ -54,35 +54,41 @@ class MemoriaDinamica(QMainWindow):
 
     def agregarProceso(self):
         nombre = self.lineEdit1.text()
-        tamanio = int(self.lineEdit2.text())
-        bandera = self.lista.buscar(nombre)
-
-        if self.seleccionarDivisionDeMemoria.currentText() == "MEJOR AJUSTE":
-            self.lista.cargarProceso_PartDinamico_MejorAjuste(nombre,tamanio)
-        elif self.seleccionarDivisionDeMemoria.currentText() == "PRIMER AJUSTE":
-            self.lista.cargarProceso_PartDinamico_PrimerAjuste(nombre,tamanio)
-        elif self.seleccionarDivisionDeMemoria.currentText() == "SIGUIENTE AJUSTE":
-            self.lista.cargarProceso_PartDinamico_SiguienteAjuste(nombre,tamanio)
-
-        self.lista.reEnumerarFila()
-        nodo = self.lista.buscar(nombre)
-        if self.tablaBitacora.rowCount()==8:
-            self.tablaBitacora.setColumnWidth(0,100)
         try:
-            if self.lista.memoriaDisponoble >= tamanio and bandera == False:
-                self.lista.reconstruirTabla(self.tablaBitacora)
-            self.lista.listar()
+            tamanio = int(self.lineEdit2.text())
         except Exception as e:
-            print("Error desde ventada %s"%e)
+            print("campo vacio")
+            tamanio = ""
+        if nombre != "" and tamanio != "":
+            bandera = self.lista.buscar(nombre)
+
+            if self.seleccionarDivisionDeMemoria.currentText() == "MEJOR AJUSTE":
+                self.lista.cargarProceso_PartDinamico_MejorAjuste(nombre,tamanio)
+            elif self.seleccionarDivisionDeMemoria.currentText() == "PRIMER AJUSTE":
+                self.lista.cargarProceso_PartDinamico_PrimerAjuste(nombre,tamanio)
+            elif self.seleccionarDivisionDeMemoria.currentText() == "SIGUIENTE AJUSTE":
+                self.lista.cargarProceso_PartDinamico_SiguienteAjuste(nombre,tamanio)
+
+            self.lista.reEnumerarFila()
+            nodo = self.lista.buscar(nombre)
+            if self.tablaBitacora.rowCount()==8:
+                self.tablaBitacora.setColumnWidth(0,100)
+            try:
+                if self.lista.memoriaDisponoble >= tamanio and bandera == False:
+                    self.lista.reconstruirTabla(self.tablaBitacora)
+                self.lista.listar()
+            except Exception as e:
+                print("Error desde ventada %s"%e)
 
 
     def liberarProceso(self):
         nombre = self.lineEdit1.text()
-        nodo = self.lista.buscar(nombre)
-        self.lista.liberarProceso_PartDinamico(nombre)
-        self.lista.reEnumerarFila()
-        self.lista.reconstruirTabla(self.tablaBitacora)
-        self.lista.listar()
+        if nombre != "":
+            nodo = self.lista.buscar(nombre)
+            self.lista.liberarProceso_PartDinamico(nombre)
+            self.lista.reEnumerarFila()
+            self.lista.reconstruirTabla(self.tablaBitacora)
+            self.lista.listar()
 
  
     def groupMainWindow(self):

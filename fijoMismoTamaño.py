@@ -48,30 +48,38 @@ class MemoriaFija(QMainWindow):
             self.lineEdit2.setEnabled(False)
 
     def agregarProceso(self):
-        nombre = self.lineEdit1.text()
-        tamanio = int(self.lineEdit2.text())
-        self.lista.cargarProcesoMismoTamanioFijo(nombre,tamanio)
-        nodo = self.lista.buscar(nombre)
-        try:
-            print(nodo)
-            print("Fila: %s"%nodo.fila)
-            print("Nombre: %s"%nodo.nombre)
-            # self.tablaBitacora.setItem(nodo.fila, 0, QTableWidgetItem("%s MU:%s\nML:%s"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante)))
-            self.tablaBitacora.item(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
-            self.lista.listar()
-        except Exception as e:
-            print(e)
+        if self.seleccionarDivisionDeMemoria.currentText != "Seleccione particiones":
+            nombre = self.lineEdit1.text()
+            try:
+                tamanio = int(self.lineEdit2.text())
+            except Exception as e:
+                print("campo vacio")
+                tamanio = ""
+            # tamanio = int(self.lineEdit2.text())
+            if nombre != "" and tamanio != "":
+                self.lista.cargarProcesoMismoTamanioFijo(nombre,tamanio)
+                nodo = self.lista.buscar(nombre)
+                try:
+                    print(nodo)
+                    print("Fila: %s"%nodo.fila)
+                    print("Nombre: %s"%nodo.nombre)
+                    # self.tablaBitacora.setItem(nodo.fila, 0, QTableWidgetItem("%s MU:%s\nML:%s"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante)))
+                    self.tablaBitacora.item(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
+                    self.lista.listar()
+                except Exception as e:
+                    print(e)
 
 
     def liberarProceso(self):
         nombre = self.lineEdit1.text()
-        nodo = self.lista.buscar(nombre)
-        try:
-            self.lista.liberarProcesosMismoTamanioFijo(nombre)
-            self.tablaBitacora.setItem(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
-            self.lista.listar()
-        except Exception as e:
-            print(e)
+        if nombre != "":
+            nodo = self.lista.buscar(nombre)
+            try:
+                self.lista.liberarProcesosMismoTamanioFijo(nombre)
+                self.tablaBitacora.item(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
+                self.lista.listar()
+            except Exception as e:
+                print(e)
 
 
     def crearParticiones(self):
@@ -117,6 +125,7 @@ class MemoriaFija(QMainWindow):
 
         self.etiqueta2 = QLabel("Particiones")
         self.seleccionarDivisionDeMemoria = QComboBox()
+        self.seleccionarDivisionDeMemoria.addItem("Seleccione particiones")
         self.seleccionarDivisionDeMemoria.addItem("1")
         self.seleccionarDivisionDeMemoria.addItem("2")
         self.seleccionarDivisionDeMemoria.addItem("4")

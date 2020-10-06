@@ -51,32 +51,36 @@ class MemoriaDistinta(QMainWindow):
 
     def agregarProceso(self):
         nombre = self.lineEdit1.text()
-        tamanio = int(self.lineEdit2.text())
-        self.lista.cargarProcesoDistintoTamanioFijo(nombre,tamanio)
-        nodo = self.lista.buscar(nombre)
         try:
-            print(nodo)
-            print("Fila: %s"%nodo.fila)
-            print("Nombre: %s"%nodo.nombre)
-            # self.tablaBitacora.setItem(nodo.fila, 0, QTableWidgetItem("%s MU:%s\nML:%s"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante)))
-            self.tablaBitacora.item(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
-            self.lista.listar()
+            tamanio = int(self.lineEdit2.text())
         except Exception as e:
-            print(e)
+            print("campo vacio")
+            tamanio = ""
+        if tamanio !="" and nombre !="":
+            self.lista.cargarProcesoDistintoTamanioFijo(nombre,tamanio)
+            nodo = self.lista.buscar(nombre)
+            try:
+                print(nodo)
+                print("Fila: %s"%nodo.fila)
+                print("Nombre: %s"%nodo.nombre)
+                # self.tablaBitacora.setItem(nodo.fila, 0, QTableWidgetItem("%s MU:%s\nML:%s"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante)))
+                self.tablaBitacora.item(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
+                self.lista.listar()
+            except Exception as e:
+                print(e)
 
 
     def liberarProceso(self):
         nombre = self.lineEdit1.text()
-        nodo = self.lista.buscar(nombre)
-        try:
-            self.lista.liberarProcesoDistintoTamanioFijo(nombre)
-            self.tablaBitacora.setItem(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
-            self.lista.listar()
-        except Exception as e:
-            print(e)
-        # self.lista.liberarProcesoDistintoTamanioFijo(nombre)
-        # self.tablaBitacora.setItem(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
-        # self.lista.listar()
+        if nombre != "":
+            nodo = self.lista.buscar(nombre)
+            try:
+                self.lista.liberarProcesoDistintoTamanioFijo(nombre)
+                self.tablaBitacora.item(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
+                self.lista.listar()
+            except Exception as e:
+                print(e)
+
 
     def crearParticiones(self):
         self.lista = Lista()
