@@ -44,9 +44,10 @@ class Lista:
     def listar(self):
         nodoActual=self.nodo
         while nodoActual:
-            print(nodoActual.nombre)
-            print(nodoActual.tamanioUtilizado)
+            print("nombre: %s   tamanio:%s"%(nodoActual.nombre,nodoActual.tamanioTotal))
+            # print(nodoActual.tamanioUtilizado)
             nodoActual=nodoActual.siguiente
+
 
 #################Metodos para particonamiento fijo del mismo tamanio#############################3   
 
