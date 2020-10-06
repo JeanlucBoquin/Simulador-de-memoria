@@ -107,6 +107,31 @@ class Lista:
                 nodoActual.nombre = ""
             nodoActual = nodoActual.siguiente
 
+        self.unirVacios_Udaldin()
+
+    def unirVacios_Udaldin(self):
+        nodoActual = self.nodo
+        while (nodoActual):
+            if (nodoActual.nombre == ""):
+                arregloVaciosTemporales = []
+                arregloVaciosTemporales.append(nodoActual)
+                
+                nodoSegundoWhile = nodoActual.siguiente
+                while (nodoSegundoWhile.nombre == ""):
+                    arregloVaciosTemporales.append(nodoSegundoWhile)
+                    nodoSegundoWhile = nodoSegundoWhile.siguiente
+
+                if len(arregloVaciosTemporales>1):
+                    sumaTamanios = 0
+                    for i in arregloVaciosTemporales:
+                        sumaTamanios+=i.tamanioTotal
+                    nodoActual.tamanioTotal = sumaTamanios
+                    nodoActual.siguiente = arregloVaciosTemporales[len(arregloVaciosTemporales)-1].siguiente
+
+            nodoActual = nodoActual.siguiente
+
+
+
 #Supuestamente Completo.
     def cargarProceso_PartDinamico_MejorAjuste(self, nombre, tamanio):
          if ((self.nodo==None) and (tamanio <= self.memoriaDisponoble)):
