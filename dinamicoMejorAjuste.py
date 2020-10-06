@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtCore import Qt, QRect
-from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtGui import QPixmap, QIcon, QMovie
 from PyQt5.QtWidgets import (QWidget, QApplication, QMainWindow, QPushButton, QLabel, QGroupBox,
                             QVBoxLayout, QHBoxLayout,QTableWidget, QTableWidgetItem,
                             QAbstractItemView, QGridLayout, QComboBox, QFrame, QLineEdit
@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import (QWidget, QApplication, QMainWindow, QPushButton, QL
 
 from Lista import Lista
 
-class MemoriaFija(QMainWindow):
+class MemoriaDinamica(QMainWindow):
     def __init__(self,sql=None):
         QMainWindow.__init__(self)
         QMainWindow.setWindowFlags(self,Qt.MSWindowsFixedSizeDialogHint)
@@ -26,36 +26,39 @@ class MemoriaFija(QMainWindow):
         self.label.setPixmap(pixmap)
         self.label.setScaledContents(True)
 
-    #    self.showTable()
         self.groupMainWindow()
-
-        # self.seleccionarDivisionDeMemoria.currentIndexChanged.connect(self.crearParticiones)
         self.ptCargar.clicked.connect(self.agregarProceso)
         self.ptLiberar.clicked.connect(self.liberarProceso)
-        # self.crearParticiones()
+        # self.seleccionarDivisionDeMemoria.currentIndexChanged.connect(self.prueba)
+        self.seleccionarDivisionDeMemoria.currentTextChanged.connect(self.prueba)
+
+
+    def prueba(self):
+        print(self.seleccionarDivisionDeMemoria.currentText())
+        self.etiqueta1.setText("DINAMICO %s"%self.seleccionarDivisionDeMemoria.currentText())
+        self.lista = Lista()
+        self.tablaBitacora.setRowCount(0)
 
     def agregarProceso(self):
         nombre = self.lineEdit1.text()
         tamanio = int(self.lineEdit2.text())
         bandera = self.lista.buscar(nombre)
-        self.lista.cargarProceso_PartDinamico_MejorAjuste(nombre,tamanio)
+
+        if self.seleccionarDivisionDeMemoria.currentText() == "MEJOR AJUSTE":
+            self.lista.cargarProceso_PartDinamico_MejorAjuste(nombre,tamanio)
+        elif self.seleccionarDivisionDeMemoria.currentText() == "PRIMER AJUSTE":
+            self.lista.cargarProceso_PartDinamico_PrimerAjuste(nombre,tamanio)
+        elif self.seleccionarDivisionDeMemoria.currentText() == "SIGUIENTE AJUSTE":
+            self.lista.cargarProceso_PartDinamico_SiguienteAjuste(nombre,tamanio)
+
         self.lista.reEnumerarFila()
         nodo = self.lista.buscar(nombre)
         if self.tablaBitacora.rowCount()==8:
             self.tablaBitacora.setColumnWidth(0,100)
         try:
-            # print(nodo)
-            # print("Fila: %s"%nodo.fila)
-            # print("Nombre: %s"%nodo.nombre)
             if self.lista.memoriaDisponoble >= tamanio and bandera == False:
-                # self.tablaBitacora.insertRow(nodo.fila)
                 self.lista.reconstruirTabla(self.tablaBitacora)
-                # self.tablaBitacora.setItem(nodo.fila, 0, QTableWidgetItem("Nombre: %s\n MU: %s"%(nodo.nombre,nodo.tamanioTotal)))
-                # self.tablaBitacora.item(nodo.fila,0).setTextAlignment(Qt.AlignCenter)
-                # self.tablaBitacora.setRowHeight(nodo.fila,40)
-            # print("\n")
             self.lista.listar()
-            # self.tablaBitacora.item(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
         except Exception as e:
             print("Error desde ventada %s"%e)
 
@@ -65,18 +68,24 @@ class MemoriaFija(QMainWindow):
         nodo = self.lista.buscar(nombre)
         self.lista.liberarProceso_PartDinamico(nombre)
         self.lista.reEnumerarFila()
-        # self.tablaBitacora.item(nodo.fila,0).setText("%s MU:%s\nML:%d"%(nodo.nombre,nodo.tamanioUtilizado,nodo.tamanioRestante))
-        # self.tablaBitacora.item(nodo.fila, 0, QTableWidgetItem("Nombre: %s\n MU: %s"%(nodo.nombre,nodo.tamanioTotal)))
         self.lista.reconstruirTabla(self.tablaBitacora)
         self.lista.listar()
-        # self.tablaBitacora.setRowCount(0)
-        # self.tablaBitacora.clearContents()
 
  
     def groupMainWindow(self):
         self.groupControl = QGroupBox()
 
-        self.etiqueta1 = QLabel("DINAMICO SIGUIENTE AJUSTE")
+        self.etiqueta2 = QLabel("Metodo")
+        self.seleccionarDivisionDeMemoria = QComboBox()
+        self.seleccionarDivisionDeMemoria.addItem("MEJOR AJUSTE")
+        self.seleccionarDivisionDeMemoria.addItem("PRIMER AJUSTE")
+        self.seleccionarDivisionDeMemoria.addItem("SIGUIENTE AJUSTE")
+        print(self.seleccionarDivisionDeMemoria.currentText())
+        h1 = QHBoxLayout()
+        h1.addWidget(self.etiqueta2)
+        h1.addWidget(self.seleccionarDivisionDeMemoria)
+
+        self.etiqueta1 = QLabel("DINAMICO MEJOR AJUSTE")
 
         self.etiqueta3 = QLabel("Nombre")
         self.lineEdit1 = QLineEdit()
@@ -100,33 +109,32 @@ class MemoriaFija(QMainWindow):
 
         v1 = QVBoxLayout()
         v1.addWidget(self.etiqueta1)
-        # v1.addLayout(h1)
+        v1.addLayout(h1)
         v1.addLayout(h2)
         v1.addLayout(h3)
         v1.addLayout(h4)
         v1.addSpacing(200)
         self.groupControl.setLayout(v1)
 
-
         self.groupSimulator = QGroupBox()
         self.line=QFrame()            #marco hereda el espacio del QMainWindow
-        # self.line.setGeometry(QRect(215,20,2,510))      #posicion y tamañp
         self.line.setFrameShape(QFrame.VLine)           #forma linea en este caso
         self.line.setFrameShadow(QFrame.Raised)         #sombra
-        # self.line.setLineWiddth(2)                       #grosor
-
-
 
         self.tablaBitacora = QTableWidget()
         self.tablaBitacora.setColumnCount(1)    #Establecer numero de columna
-        # self.tablaBitacora.setRowCount(5)       #Establecer numero de fila
         self.tablaBitacora.setMaximumWidth(100) #Establecer ancho maximo
 
+        self.label = QLabel(self.groupControl)
+        self.label.setGeometry(QRect(0,260,280,80))
+        pix = QPixmap("blue.png")
+        self.label.setPixmap(pix)
+        self.label.setScaledContents(True)
+        # gif.start()
         # self.tablaBitacora.setItem(0, 0, QTableWidgetItem("8 MB"))
         # self.tablaBitacora.item(0,0).setBackground(Qt.red)
-        # self.tablaBitacora.item(0,0).setTextAlignment(Qt.AlignCenter)
 
-        nombrecolumnas=("RAM",)
+        nombrecolumnas=("RAM 56M",)
         self.tablaBitacora.setHorizontalHeaderLabels(nombrecolumnas)#nombre de columna
 
         self.tablaBitacora.setAutoScroll(True)
@@ -136,12 +144,6 @@ class MemoriaFija(QMainWindow):
         self.tablaBitacora.setRowHeight(0,10)
         self.tablaBitacora.setRowHeight(1,50)
         self.tablaBitacora.setRowHeight(2,90)
-
-      
-        """
-            for indice, ancho in enumerate((anchura1,anchura2,anchura3),start=0):
-                self.tablaBitacora.setColumnWidth(indice,ancho)
-        """
 
         self.tablaBitacora.setEditTriggers(QAbstractItemView.NoEditTriggers)#Desabilitar editar celdas
         # self.tablaBitacora.setSelectionMode(QAbstractItemView.SingleSelection)#Seleccionar una celda a la vez
@@ -162,18 +164,9 @@ class MemoriaFija(QMainWindow):
         self.centralwidget.setLayout(self.grid)
 
 
-
-
-
-
-
-
-
     def verificarCantidadDeFilas(self,tabla,datos):
         if len(datos) > tabla.rowCount():
             tabla.setRowCount(len(datos))
-
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

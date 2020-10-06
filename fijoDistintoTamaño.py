@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import (QWidget, QApplication, QMainWindow, QPushButton, QL
 
 from Lista import Lista
 
-class MemoriaFija(QMainWindow):
+class MemoriaDistinta(QMainWindow):
     def __init__(self,sql=None):
         QMainWindow.__init__(self)
         QMainWindow.setWindowFlags(self,Qt.MSWindowsFixedSizeDialogHint)
@@ -125,11 +125,11 @@ class MemoriaFija(QMainWindow):
         self.tablaBitacora.setRowCount(5)       #Establecer numero de fila
         self.tablaBitacora.setMaximumWidth(100) #Establecer ancho maximo
 
-        self.tablaBitacora.setItem(0, 0, QTableWidgetItem("8 MB"))
-        self.tablaBitacora.item(0,0).setBackground(Qt.red)
-        self.tablaBitacora.item(0,0).setTextAlignment(Qt.AlignCenter)
+        # self.tablaBitacora.setItem(0, 0, QTableWidgetItem("8 MB"))
+        # self.tablaBitacora.item(0,0).setBackground(Qt.red)
+        # self.tablaBitacora.item(0,0).setTextAlignment(Qt.AlignCenter)
 
-        nombrecolumnas=("RAM",)
+        nombrecolumnas=("RAM 56M",)
         self.tablaBitacora.setHorizontalHeaderLabels(nombrecolumnas)#nombre de columna
 
         self.tablaBitacora.setAutoScroll(True)
@@ -180,6 +180,6 @@ class MemoriaFija(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    main = MemoriaFija()
+    main = MemoriaDistinta()
     main.show()
     app.exec_()

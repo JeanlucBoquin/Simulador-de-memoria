@@ -140,14 +140,14 @@ class MemoriaFija(QMainWindow):
 
         self.tablaBitacora = QTableWidget()
         self.tablaBitacora.setColumnCount(1)    #Establecer numero de columna
-        self.tablaBitacora.setRowCount(2)       #Establecer numero de fila
+        # self.tablaBitacora.setRowCount(2)       #Establecer numero de fila
         self.tablaBitacora.setMaximumWidth(100) #Establecer ancho maximo
 
-        self.tablaBitacora.setItem(0, 0, QTableWidgetItem("8 MB"))
-        self.tablaBitacora.item(0,0).setBackground(Qt.red)
-        self.tablaBitacora.item(0,0).setTextAlignment(Qt.AlignCenter)
+        # self.tablaBitacora.setItem(0, 0, QTableWidgetItem("8 MB"))
+        # self.tablaBitacora.item(0,0).setBackground(Qt.red)
+        # self.tablaBitacora.item(0,0).setTextAlignment(Qt.AlignCenter)
 
-        nombrecolumnas=("RAM",)
+        nombrecolumnas=("RAM 56M",)
         self.tablaBitacora.setHorizontalHeaderLabels(nombrecolumnas)#nombre de columna
 
         self.tablaBitacora.setAutoScroll(True)
@@ -181,11 +181,6 @@ class MemoriaFija(QMainWindow):
         self.grid.addWidget(self.groupSimulator,0,2,1,4)
 
         self.centralwidget.setLayout(self.grid)
-
-
-
-
-
 
 
 

@@ -190,10 +190,12 @@ class Lista:
              
              #print(tamaniosProcesosMayoresOIguales)
              tamaniosProcesosMayoresOIguales.sort()
-             tamanioMejorAjuste = tamaniosProcesosMayoresOIguales[0]
+             if len(tamaniosProcesosMayoresOIguales) > 0: 
+                tamanioMejorAjuste = tamaniosProcesosMayoresOIguales[0]
              #print(tamanioMejorAjuste)
              #Recorrer la lista buscando la partición más ajustada.
-             nodoActual2 = self.nodo
+             else: return   
+             nodoActual2 = self.nodo             
              while nodoActual2:
                 if (nodoActual2.nombre == nombre):
                     print("Hay el mismo nombre ya")
