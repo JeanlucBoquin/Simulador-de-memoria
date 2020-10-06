@@ -107,31 +107,38 @@ class Lista:
                 nodoActual.nombre = ""
             nodoActual = nodoActual.siguiente
 
-# """ ##Pendiente de completar.
-#     def cargarProceso_PartDinamico_MejorAjuste(self, nombre, tamanio):
-#         if self.nodo==None:
-#             self.agregar(nombre, tamanio)
-#             if (tamanio != self.memoriaDisponoble):
-#                 self.agregar("", self.memoriaDisponoble-tamanio)
-#         else:
-#             nodoActual = self.nodo
-#             tamaniosProcesosMayoresOIguales = []
-#             tamanioMejorAjuste = 0
-#             while nodoActual:
-#                 if (nodoActual.tamanioTotal >= tamanio and nodoActual.nombre == ""):
-#                     tamaniosProcesosMayoresOIguales.append(nodoActual.tamanioTotal)
-#                 nodoActual = nodoActual.siguiente
+##Pendiente de completar.
+     def cargarProceso_PartDinamico_MejorAjuste(self, nombre, tamanio):
+         if ((self.nodo==None) and (tamanio <= self.memoriaDisponoble)):
+            self.agregar(nombre, tamanio)
+            self.agregar("", self.memoriaDisponoble-tamanio)
+         else:
+             #Buscando las particiones mayores o iguales libres
+             nodoActual = self.nodo
+             tamaniosProcesosMayoresOIguales = []
+             tamanioMejorAjuste = 0
+             while nodoActual:
+                 if (nodoActual.tamanioTotal >= tamanio and nodoActual.nombre == ""):
+                     tamaniosProcesosMayoresOIguales.append(nodoActual.tamanioTotal)
+                 nodoActual = nodoActual.siguiente
+             
+             tamanioMejorAjuste = (tamaniosProcesosMayoresOIguales.sort())[0]
+             #Recorrer la lista buscando la partición más ajustada.
+             nodoActual = self.nodo
+             while nodoActual:
+                 if (nodoActual.tamanioTotal == tamanioMejorAjuste and nodoActual.nombre == ""):
+                    nodoActual.nombre = nombre
+                    self.ultimoIngresado = nodoActual
+                    if (nodoActual.tamanioTotal > tamanio):
+                        tamanioQueResta = nodoActual.tamanioTotal - tamanio
+                        nodoActual.tamanioTotal = tamanio
 
-#             tamanioMejorAjuste = (tamaniosProcesosMayoresOIguales.sort())[0]
+                        siguiente_temp = nodoActual.siguiente
+                        #nodoActual.siguiente = self.agregar("", tamanioQueResta)
+                        nodoActual.siguiente = Nodo("", tamanioQueResta)
+                        nodoActual.siguiente.siguiente = siguiente_temp
+                    break
 
-#             nodoActual = self.nodo
-#             while nodoActual:
-#                 if (nodoActual.tamanioTotal == tamanioMejorAjuste and nodoActual.nombre == ""):
-#                     nodoActual.nombre = nombre
-#                     tamanioQueResta = nodoActual.tamanioTotal - tamanio
-#                     nodoActual.tamanioTotal = tamanio
-#                     siguiente_temporal = nodoActual.siguiente
-# """
 
     def cargarProceso_PartDinamico_PrimerAjuste(self, nombre, tamanio):
         if self.nodo==None:
