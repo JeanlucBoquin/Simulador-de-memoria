@@ -105,6 +105,9 @@ class MemoriaFija(QMainWindow):
         h2 = QHBoxLayout()
         h2.addWidget(self.etiqueta3)
         h2.addWidget(self.lineEdit1)
+        
+        self.btRegresar = QPushButton("Regresar",self.groupControl)
+        self.btRegresar.setGeometry(QRect(5,310,90,25))
 
         self.etiqueta4 = QLabel("Tamaño")
         self.lineEdit2 = QLineEdit()

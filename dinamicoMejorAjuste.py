@@ -75,6 +75,8 @@ class MemoriaDinamica(QMainWindow):
     def groupMainWindow(self):
         self.groupControl = QGroupBox()
 
+
+
         self.etiqueta2 = QLabel("Metodo")
         self.seleccionarDivisionDeMemoria = QComboBox()
         self.seleccionarDivisionDeMemoria.addItem("MEJOR AJUSTE")
@@ -133,6 +135,8 @@ class MemoriaDinamica(QMainWindow):
         # gif.start()
         # self.tablaBitacora.setItem(0, 0, QTableWidgetItem("8 MB"))
         # self.tablaBitacora.item(0,0).setBackground(Qt.red)
+        self.btRegresar = QPushButton("Regresar",self.groupControl)
+        self.btRegresar.setGeometry(QRect(5,310,90,25))
 
         nombrecolumnas=("RAM 56M",)
         self.tablaBitacora.setHorizontalHeaderLabels(nombrecolumnas)#nombre de columna
@@ -170,6 +174,6 @@ class MemoriaDinamica(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    main = MemoriaFija()
+    main = MemoriaDinamica()
     main.show()
     app.exec_()

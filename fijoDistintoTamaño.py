@@ -79,6 +79,9 @@ class MemoriaDistinta(QMainWindow):
     def groupMainWindow(self):
         self.groupControl = QGroupBox()
 
+        self.btRegresar = QPushButton("Regresar",self.groupControl)
+        self.btRegresar.setGeometry(QRect(5,296,90,25))
+
         self.etiqueta1 = QLabel("FIJO DE DISTINTO TAMAÑO")
 
         self.etiqueta3 = QLabel("Nombre")

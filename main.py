@@ -45,15 +45,20 @@ class MainWindow(QMainWindow):
         vl.addWidget(self.group)
         self.centralWidget.setLayout(vl)
 
-        #Eventos 
-        # self.btBitacora.clicked.connect(self.showBitacora)
-        # # self.btMonitore.clicked.connect(self.showMonitoreo)
-        # self.windowBitacora.btRegresar.clicked.connect(self.regresar)
-        # self.windowMonitoreo.btRegresar.clicked.connect(self.regresar)
+        self.windowMD.btRegresar.clicked.connect(self.regresarInicio)
+        self.windowDT.btRegresar.clicked.connect(self.regresarInicio)
+        self.windowFMT.btRegresar.clicked.connect(self.regresarInicio)
+
         self.btMF.clicked.connect(self.showMF)
         self.btMFD.clicked.connect(self.showMFD)
         self.btMD.clicked.connect(self.showMD)
-            
+
+    def regresarInicio(self):
+        self.windowDT.hide()
+        self.windowMD.hide()
+        self.windowFMT.hide()
+        self.show()
+
     def showMF(self):
         self.hide()
         self.windowDT.hide()
@@ -61,25 +66,14 @@ class MainWindow(QMainWindow):
         self.windowFMT.show()
     def showMFD(self):
         self.hide()
-        self.windowDT.show()
         self.windowMD.hide()
         self.windowFMT.hide()
+        self.windowDT.show()
     def showMD(self):
         self.hide()
         self.windowDT.hide()
-        self.windowMD.show()
         self.windowFMT.hide()
-    # def regresar(self):
-    #     self.show()
-    #     self.windowBitacora.hide()
-    #     self.windowMonitoreo.hide()
-    # def showBitacora(self):
-    #     self.hide()
-    #     self.windowBitacora.establecerDatos()
-    #     self.windowBitacora.show()
-    # def showMonitoreo(self):
-    #     self.hide()
-    #     self.windowMonitoreo.show()
+        self.windowMD.show()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
