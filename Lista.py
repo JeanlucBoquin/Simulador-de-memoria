@@ -175,44 +175,43 @@ class Lista:
        
     # def reEnumerar
     def cargarProceso_PartDinamico_MejorAjuste(self, nombre, tamanio):
-        if ((self.nodo==None) and (tamanio <= self.memoriaDisponoble)):
+         if ((self.nodo==None) and (tamanio <= self.memoriaDisponoble)):
             self.agregar(nombre, tamanio)
             self.agregar("", self.memoriaDisponoble-tamanio)
-        else:
-            print("!!!!!!!!!!!!!!!!!!!!!!!!")
-            #Buscando las particiones mayores o iguales libres
-            nodoActual = self.nodo
-            tamaniosProcesosMayoresOIguales = []
-            tamanioMejorAjuste = 0
-            while nodoActual:
-                if (nodoActual.tamanioTotal >= tamanio and nodoActual.nombre == ""):
-                    tamaniosProcesosMayoresOIguales.append(nodoActual.tamanioTotal)
-                nodoActual = nodoActual.siguiente
-                print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&6")
-            print(tamaniosProcesosMayoresOIguales)
-            tamaniosProcesosMayoresOIguales.sort()
-            tamanioMejorAjuste = tamaniosProcesosMayoresOIguales[0]
-            print(tamaniosProcesosMayoresOIguales)
-            #Recorrer la lista buscando la partición más ajustada.
-            nodoActual = self.nodo
-            while nodoActual:
-                if (nodoActual.nombre == nombre):
+         else:
+             #Buscando las particiones mayores o iguales libres
+             nodoActual = self.nodo
+             tamaniosProcesosMayoresOIguales = []
+             tamanioMejorAjuste = 0
+             while nodoActual:
+                 if (nodoActual.tamanioTotal >= tamanio and nodoActual.nombre == ""):
+                     tamaniosProcesosMayoresOIguales.append(nodoActual.tamanioTotal)
+                 nodoActual = nodoActual.siguiente
+             
+             #print(tamaniosProcesosMayoresOIguales)
+             tamaniosProcesosMayoresOIguales.sort()
+             tamanioMejorAjuste = tamaniosProcesosMayoresOIguales[0]
+             #print(tamanioMejorAjuste)
+             #Recorrer la lista buscando la partición más ajustada.
+             nodoActual2 = self.nodo
+             while nodoActual2:
+                if (nodoActual2.nombre == nombre):
                     print("Hay el mismo nombre ya")
-                    break
                 else:
-                    if (nodoActual.tamanioTotal == tamanioMejorAjuste and nodoActual.nombre == ""):
-                        nodoActual.nombre = nombre
-                        self.ultimoIngresado = nodoActual
-                        if (nodoActual.tamanioTotal > tamanio):
-                            tamanioQueResta = nodoActual.tamanioTotal - tamanio
-                            nodoActual.tamanioTotal = tamanio
+                    if (nodoActual2.tamanioTotal == tamanioMejorAjuste and nodoActual2.nombre == ""):
+                        nodoActual2.nombre = nombre
+                        self.ultimoIngresado = nodoActual2
+                        if (nodoActual2.tamanioTotal > tamanio):
+                            tamanioQueResta = nodoActual2.tamanioTotal - tamanio
+                            nodoActual2.tamanioTotal = tamanio
                 
-                            siguiente_temp = nodoActual.siguiente
-                            #nodoActual.siguiente = self.agregar("", tamanioQueResta)
-                            nodoActual.siguiente = Nodo("", tamanioQueResta)
-                            nodoActual.siguiente.siguiente = siguiente_temp
-                    break
-                nodoActual = nodoActual.siguiente
+                            siguiente_temp = nodoActual2.siguiente
+                            #nodoActual2.siguiente = self.agregar("", tamanioQueResta)
+                            nodoActual2.siguiente = Nodo("", tamanioQueResta)
+                            nodoActual2.siguiente.siguiente = siguiente_temp
+                            print("Ingresé y metí %s, %s"%(nombre, tamanio))
+                        break
+                nodoActual2 = nodoActual2.siguiente
 
     def cargarProceso_PartDinamico_PrimerAjuste(self, nombre, tamanio):
         if self.nodo==None:

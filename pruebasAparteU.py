@@ -102,35 +102,35 @@ class Lista:
 
     def liberarProceso_PartDinamico(self, nombre):
         nodoActual = self.nodo
-        while nodoActual:
+        while nodoActual: #C D
             if (nodoActual.nombre == nombre):
                 nodoActual.nombre = ""
+                try:
+                    if nodoActual.siguiente.nombre == "":
+                        nodoActual.tamanioTotal += nodoActual.siguiente.tamanioTotal
+                        nodoActual.siguiente = nodoActual.siguiente.siguiente
+                        self.unirVacios()
+                except Exception as e:
+                    print("por si acaso %s"%e)
+            
             nodoActual = nodoActual.siguiente
+        self.unirVacios()
+        # self.unirVacios()
+        # self.unirVacios()
 
-        self.unirVacios_Udaldin()
-
-    def unirVacios_Udaldin(self):
+    def unirVacios(self):
         nodoActual = self.nodo
-        while (nodoActual):
-            if (nodoActual.nombre == ""):
-                arregloVaciosTemporales = []
-                arregloVaciosTemporales.append(nodoActual)
-                
-                nodoSegundoWhile = nodoActual.siguiente
-                while (nodoSegundoWhile.nombre == ""):
-                    arregloVaciosTemporales.append(nodoSegundoWhile)
-                    nodoSegundoWhile = nodoSegundoWhile.siguiente
+        while nodoActual:
 
-                if len(arregloVaciosTemporales>1):
-                    sumaTamanios = 0
-                    for i in arregloVaciosTemporales:
-                        sumaTamanios+=i.tamanioTotal
-                    nodoActual.tamanioTotal = sumaTamanios
-                    nodoActual.siguiente = arregloVaciosTemporales[len(arregloVaciosTemporales)-1].siguiente
-
+            try:
+                if nodoActual.nombre == "":
+                    if nodoActual.siguiente.nombre == "":
+                        nodoActual.tamanioTotal += nodoActual.siguiente.tamanioTotal
+                        nodoActual.siguiente = nodoActual.siguiente.siguiente
+                # nodoActual = nodoActual.siguiente
+            except Exception as e:
+                print("contola %s"%e)
             nodoActual = nodoActual.siguiente
-
-
 
 #Supuestamente Completo.
     def cargarProceso_PartDinamico_MejorAjuste(self, nombre, tamanio):
@@ -147,27 +147,30 @@ class Lista:
                      tamaniosProcesosMayoresOIguales.append(nodoActual.tamanioTotal)
                  nodoActual = nodoActual.siguiente
              
-             tamanioMejorAjuste = (tamaniosProcesosMayoresOIguales.sort())[0]
+             #print(tamaniosProcesosMayoresOIguales)
+             tamaniosProcesosMayoresOIguales.sort()
+             tamanioMejorAjuste = tamaniosProcesosMayoresOIguales[0]
+             #print(tamanioMejorAjuste)
              #Recorrer la lista buscando la partición más ajustada.
-             nodoActual = self.nodo
-             while nodoActual:
-                if (nodoActual.nombre == nombre):
+             nodoActual2 = self.nodo
+             while nodoActual2:
+                if (nodoActual2.nombre == nombre):
                     print("Hay el mismo nombre ya")
-                    break
                 else:
-                    if (nodoActual.tamanioTotal == tamanioMejorAjuste and nodoActual.nombre == ""):
-                        nodoActual.nombre = nombre
-                        self.ultimoIngresado = nodoActual
-                        if (nodoActual.tamanioTotal > tamanio):
-                            tamanioQueResta = nodoActual.tamanioTotal - tamanio
-                            nodoActual.tamanioTotal = tamanio
+                    if (nodoActual2.tamanioTotal == tamanioMejorAjuste and nodoActual2.nombre == ""):
+                        nodoActual2.nombre = nombre
+                        self.ultimoIngresado = nodoActual2
+                        if (nodoActual2.tamanioTotal > tamanio):
+                            tamanioQueResta = nodoActual2.tamanioTotal - tamanio
+                            nodoActual2.tamanioTotal = tamanio
                 
-                            siguiente_temp = nodoActual.siguiente
-                            #nodoActual.siguiente = self.agregar("", tamanioQueResta)
-                            nodoActual.siguiente = Nodo("", tamanioQueResta)
-                            nodoActual.siguiente.siguiente = siguiente_temp
-                    break
-                nodoActual = nodoActual.siguiente
+                            siguiente_temp = nodoActual2.siguiente
+                            #nodoActual2.siguiente = self.agregar("", tamanioQueResta)
+                            nodoActual2.siguiente = Nodo("", tamanioQueResta)
+                            nodoActual2.siguiente.siguiente = siguiente_temp
+                            print("Ingresé y metí %s, %s"%(nombre, tamanio))
+                        break
+                nodoActual2 = nodoActual2.siguiente
 
 
     def cargarProceso_PartDinamico_PrimerAjuste(self, nombre, tamanio):
@@ -228,3 +231,10 @@ class Lista:
 
             if (ingresadoYa==False):
                 self.cargarProceso_PartDinamico_PrimerAjuste(nombre, tamanio)
+
+    def listar2(self):
+        nodoActual=self.nodo
+        while nodoActual:
+            print("nombre: %s   tamanio:%s   fija:%s"%(nodoActual.nombre,nodoActual.tamanioTotal,nodoActual.fila))
+            # print(nodoActual.tamanioUtilizado)
+            nodoActual=nodoActual.siguiente
