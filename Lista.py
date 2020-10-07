@@ -212,11 +212,28 @@ class Lista:
                 nodoActual2 = nodoActual2.siguiente
 
     def cargarProceso_PartDinamico_PrimerAjuste(self, nombre, tamanio):
-        if self.nodo==None:
+        if ((self.nodo==None) and (tamanio <= self.memoriaDisponoble)):
             self.agregar(nombre, tamanio)
             if (tamanio != self.memoriaDisponoble):
                 self.agregar("", self.memoriaDisponoble-tamanio)
         else:
+             #Buscando las particiones mayores o iguales libres
+            nodoIterar = self.nodo
+            tamaniosProcesosMayoresOIguales = []
+            tamanioMejorAjuste_2 = 0
+            while nodoIterar:
+                if (nodoIterar.tamanioTotal >= tamanio and nodoIterar.nombre == ""):
+                    tamaniosProcesosMayoresOIguales.append(nodoIterar.tamanioTotal)
+                nodoIterar = nodoIterar.siguiente
+             
+             #print(tamaniosProcesosMayoresOIguales)
+            tamaniosProcesosMayoresOIguales.sort()
+            if len(tamaniosProcesosMayoresOIguales) > 0: 
+                tamanioMejorAjuste_2 = tamaniosProcesosMayoresOIguales[0]
+             #print(tamanioMejorAjuste)
+             #Recorrer la lista buscando la partición más ajustada.
+            else: return 
+
             nodoActual = self.nodo
             while nodoActual:
                 if(nodoActual.nombre == nombre):
@@ -238,11 +255,27 @@ class Lista:
 
 
     def cargarProceso_PartDinamico_SiguienteAjuste(self, nombre, tamanio): #supuestamente completo.
-        if self.ultimoIngresado==None:
+        if ((self.ultimoIngresado==None) and (tamanio <= self.memoriaDisponoble)):
             self.agregar(nombre, tamanio)
             self.agregar("", self.memoriaDisponoble-tamanio)
 
         else:
+            nodoIterar = self.nodo
+            tamaniosProcesosMayoresOIguales = []
+            tamanioMejorAjuste_3 = 0
+            while nodoIterar:
+                if (nodoIterar.tamanioTotal >= tamanio and nodoIterar.nombre == ""):
+                    tamaniosProcesosMayoresOIguales.append(nodoIterar.tamanioTotal)
+                nodoIterar = nodoIterar.siguiente
+             
+             #print(tamaniosProcesosMayoresOIguales)
+            tamaniosProcesosMayoresOIguales.sort()
+            if len(tamaniosProcesosMayoresOIguales) > 0: 
+                tamanioMejorAjuste_3 = tamaniosProcesosMayoresOIguales[0]
+             #print(tamanioMejorAjuste)
+             #Recorrer la lista buscando la partición más ajustada.
+            else: return 
+
             nodoActual=self.ultimoIngresado
             ingresadoYa = False
             while (nodoActual):
