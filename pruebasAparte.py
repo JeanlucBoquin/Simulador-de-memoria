@@ -1,4 +1,11 @@
-from Nodo import Nodo
+
+
+
+
+
+
+
+'''from Nodo import Nodo
 class Lista:
     def __init__(self):
         self.nodo=None
@@ -165,4 +172,4 @@ class Lista:
                     nodoActual.nodoActual.tamanioTotal=tamanioTotal
 
 
-df
+df'''

@@ -147,8 +147,6 @@ class Lista:
             
             nodoActual = nodoActual.siguiente
         self.unirVacios()
-        # self.unirVacios()
-        # self.unirVacios()
 
     def unirVacios(self):
         nodoActual = self.nodo
@@ -173,7 +171,7 @@ class Lista:
             print(nodoActual.fila)
             nodoActual= nodoActual.siguiente
        
-    # def reEnumerar
+
     def cargarProceso_PartDinamico_MejorAjuste(self, nombre, tamanio):
          if ((self.nodo==None) and (tamanio <= self.memoriaDisponoble)):
             self.agregar(nombre, tamanio)
